@@ -12,7 +12,7 @@ module.exports = {
   async initialize() {
     if (connection) {
       await connection.execute(`
-        CREATE TABLE IF NOT EXISTS users (
+        CREATE TABLE IF NOT EXISTS tbl_101_users (
           user_id INT AUTO_INCREMENT PRIMARY KEY,
           username VARCHAR(50) NOT NULL,
           password VARCHAR(100) NOT NULL
@@ -20,7 +20,7 @@ module.exports = {
         );
       `);
       await connection.execute(`
-        CREATE TABLE IF NOT EXISTS wardrobes_1 (
+        CREATE TABLE IF NOT EXISTS tbl_101_wardrobes (
           wardrobe_id INT AUTO_INCREMENT PRIMARY KEY,
           wardrobe_name VARCHAR(100) NOT NULL,
           user_id INT,
