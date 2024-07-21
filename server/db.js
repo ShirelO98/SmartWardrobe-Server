@@ -31,6 +31,11 @@ const initialize = async () => {
     await connection.execute();
   }
 };
+const dbinit = async () => {
+  await db.createConnection();
+  await db.initialize();
+  await db.closeConnection();
+};
 
 const closeConnection = async () => {
   if (connection) {
@@ -38,6 +43,9 @@ const closeConnection = async () => {
   }
 };
 
-module.exports= {
-  closeConnection,initialize,createConnection,
-}
+module.exports = {
+  closeConnection,
+  initialize,
+  createConnection,
+  dbinit,
+};

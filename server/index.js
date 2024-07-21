@@ -3,12 +3,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 8081;
 const db = require("./db");
-async function dbinit() {
-  await db.createConnection();
-  await db.initialize();
-  await db.closeConnection();
-}
-dbinit();
+db.dbinit();
 const { userRouter } = require("./routers/userrouter");
 
 app.use(express.json());
