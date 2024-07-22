@@ -11,6 +11,7 @@ const createConnection = async () => {
   });
   return connection;
 };
+
 const initialize = async () => {
   if (connection) {
     await connection.execute(`

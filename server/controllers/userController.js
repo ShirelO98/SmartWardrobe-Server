@@ -8,7 +8,7 @@ async function loginUser(req, res) {
   try {
     const connection = await createConnection();
     const [rows] = await connection.execute(
-      "SELECT user_id FROM tbl_101_users WHERE username = ? AND password = ?",
+      "SELECT id FROM tbl_101_users WHERE user_name = ? AND user_password = ?",
       [username, password]
     );
 

@@ -3,8 +3,9 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 8081;
 const db = require("./db");
-//db.dbinit();
+// db.dbinit();
 const { userRouter } = require("./routers/userrouter");
+const { createConnection } = require("mysql2");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
