@@ -1,4 +1,5 @@
-const { createConnection, closeConnection } = require("../db");
+const { query } = require("../db");
+
 async function loginUser(req, res) {
   const { username, password } = req.body;
   if (!username || !password) {
@@ -6,24 +7,22 @@ async function loginUser(req, res) {
   }
 
   try {
-    const connection = await createConnection();
-    const [rows] = await connection.execute(
-      "SELECT user_id FROM tbl_101_users WHERE username = ? AND password = ?",
+    const rows = await query(
+      "SELECT id FROM tbl_101_users WHERE user_name = ? AND user_password = ?",
       [username, password]
     );
-
-    await closeConnection();
-
-    if (rows.length === 0) {
+    if (rows[0] === undefined) {
       return res.status(401).json({ error: "Wrong User Name or Password" });
     }
 
-    res.json({ UserID: rows[0].user_id, msg: "Login successful" });
+    res.json({ UserID: rows[0].UserID, msg: "Login successful" });
   } catch (err) {
     console.error("Failed to login:", err);
     res.status(500).json({ error: "Failed to login" });
   }
 }
 module.exports = {
-  loginUser,
+  userController: {
+    loginUser,
+  },
 };
