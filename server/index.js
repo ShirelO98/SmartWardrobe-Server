@@ -2,10 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 8081;
-
-// fix it adar!
-// const db = require("./db");
-// db.dbinit();
+const db = require("./db");
+db.dbinit();
 
 // Import routes
 const { userRouter } = require("./routers/users-router");

@@ -16,10 +16,12 @@ const query = async (sql, params) => {
   return results;
 };
 
+
 const initialize = async () => {
-  if (connection) {
+  const connection = await createConnection();
+  try {
     await connection.execute(`
-      CREATE TABLE if not exists tbl_101_users (
+      CREATE TABLE IF NOT EXISTS tbl_101_users (
         id INT AUTO_INCREMENT PRIMARY KEY,
         f_name VARCHAR(255) NOT NULL,
         l_name VARCHAR(255) NOT NULL,
@@ -28,7 +30,7 @@ const initialize = async () => {
       ); 
     `);
     await connection.execute(`
-      CREATE TABLE if not exists tbl_101_wardrobes_of_user (
+      CREATE TABLE IF NOT EXISTS tbl_101_wardrobes_of_user (
         wardrobe_code INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT NOT NULL,
         wardrobe_name VARCHAR(255) NOT NULL,
@@ -40,14 +42,14 @@ const initialize = async () => {
       );
     `);
     await connection.execute(`
-      CREATE TABLE if not exists tbl_101_item (
+      CREATE TABLE IF NOT EXISTS tbl_101_item (
         id INT AUTO_INCREMENT PRIMARY KEY,
         wardrobe_code INT NOT NULL,
         item_status BOOLEAN NOT NULL,
         item_name VARCHAR(255) NOT NULL,
         item_color VARCHAR(255) NOT NULL,
         item_type VARCHAR(255) NOT NULL, 
-	      item_season VARCHAR(255) NOT NULL,
+        item_season VARCHAR(255) NOT NULL,
         item_size VARCHAR(255) NOT NULL, 
         item_img VARCHAR(500) NOT NULL,
         FOREIGN KEY (wardrobe_code) REFERENCES tbl_101_wardrobes_of_user(wardrobe_code)
@@ -56,7 +58,7 @@ const initialize = async () => {
       );
     `);
     await connection.execute(`
-      CREATE TABLE if not exists tbl_101_looks (
+      CREATE TABLE IF NOT EXISTS tbl_101_looks (
         look_id INT AUTO_INCREMENT PRIMARY KEY,
         item_id_1 INT NOT NULL,
         item_id_2 INT NOT NULL,
@@ -72,14 +74,14 @@ const initialize = async () => {
         ON DELETE CASCADE
         ON UPDATE CASCADE
       );
-  `);
+    `);
+  } finally {
+    connection.end(); 
   }
 };
 
 const dbinit = async () => {
-  await db.createConnection();
-  await db.initialize();
-  await db.closeConnection();
+  await initialize();
 };
 
 module.exports = {
