@@ -1,9 +1,12 @@
-// const { Router } = require("express");
-// const {loginUser } = require("../controllers/wardrobeController");
-// const userRouter = new Router();
+const { Router } = require("express");
+const { wardrobeController } = require("../controllers/wardrobeController");
 
-// userRouter.post("/login", ); 
-// userRouter.post("/login", ); 
+const wardrobeRouter = new Router();
 
 
-// module.exports = { userRouter };
+wardrobeRouter.post("/", wardrobeController.createWardrobe);
+wardrobeRouter.get("/:id", wardrobeController.getWardrobe);
+wardrobeRouter.put("/:id", wardrobeController.updateWardrobeName);
+wardrobeRouter.delete("/:id", wardrobeController.deleteWardrobe);
+
+module.exports = { wardrobeRouter };

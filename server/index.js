@@ -2,10 +2,16 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 8081;
-const db = require("./db");
+
+// fix it adar!
+// const db = require("./db");
 // db.dbinit();
+
+// Import routes
 const { userRouter } = require("./routers/users-router");
-const { createConnection } = require("mysql2");
+const { wardrobeRouter } = require("./routers/wardrobe-router");
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
@@ -19,7 +25,10 @@ app.use((req, res, next) => {
   next();
 });
 
+// Routes
 app.use("/user", userRouter);
+app.use("/wardrobe", wardrobeRouter);
+
 
 app.listen(port);
 console.log(`listening on port ${port}`);
