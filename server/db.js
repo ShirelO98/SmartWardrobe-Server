@@ -1,15 +1,19 @@
-const mysql = require("mysql2/promise");
-let connection;
-
 const createConnection = async () => {
-  connection = await mysql.createConnection({
+  const mysql = require("mysql2/promise");
+  const connection = await mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-
   });
   return connection;
+};
+
+const query = async (sql, params) => {
+  const connection = await createConnection();
+  const [results] = await connection.execute(sql, params);
+  connection.end();
+  return results;
 };
 
 const initialize = async () => {
@@ -72,12 +76,6 @@ const initialize = async () => {
   }
 };
 
-const closeConnection = async () => {
-  if (connection) {
-    await connection.end();
-  }
-};
-
 const dbinit = async () => {
   await db.createConnection();
   await db.initialize();
@@ -85,8 +83,8 @@ const dbinit = async () => {
 };
 
 module.exports = {
-  closeConnection,
-  initialize,
   createConnection,
+  initialize,
   dbinit,
+  query,
 };
