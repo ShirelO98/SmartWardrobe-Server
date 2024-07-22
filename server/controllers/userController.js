@@ -1,25 +1,34 @@
-exports.userController = {
-  async getWardrobes(req, res) {
-    console.log("user")
+const db = require("../db");
+const bcrypt = require("bcrypt");
 
-    res.json({ message: "Get wardrobes" });
-  },
-  async addWardrobe(req, res) {
-    const { name } = req.params;
-    console.log(`name: ${name}`);
+async function loginUser(req, res) {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ error: "Missing Field" });
+  }
 
-    res.json({ message: "Wardrobe added" });
-  },
-  async updateWardrobe(req, res) {
-    const { wardrobeID, newName } = req.params;
-    console.log(`Wardrobe ID: ${wardrobeID}, New Name: ${newName}`);
+  try {
+    const connection = await db.createConnection();
+    const [rows] = await connection.execute(
+      "SELECT user_id FROM tbl_101_users WHERE username = ? AND password = ?",
+      [username, password]
+    );
+    await db.closeConnection();
 
-    res.json({ message: "Wardrobe updated" });
-  },
-  async deleteWardrobe(req, res) {
-    const { wardrobeID } = req.params;
-    console.log(`Wardrobe ID: ${wardrobeID}`);
+    if (rows.length === 0) {
+      return res.status(401).json({ error: "Wrong User Name or Password" });
+    }
+    const match = await bcrypt.compare(password, rows[0].password);
+    if (!match) {
+      return res.status(401).json({ error: "Wrong Username or Password" });
+    }
 
-    res.json({ message: "Wardrobe deleted" });
-  },
+    res.json({ "User ID": rows[0].user_id });
+  } catch (err) {
+    console.error("Failed to login:", err);
+    res.status(500).json({ error: "Failed to login" });
+  }
+}
+module.exports = {
+  loginUser,
 };

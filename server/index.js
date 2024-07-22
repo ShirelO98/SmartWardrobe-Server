@@ -5,7 +5,6 @@ const port = process.env.PORT || 8081;
 const db = require("./db");
 db.dbinit();
 const { userRouter } = require("./routers/userrouter");
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
