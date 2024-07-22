@@ -20,17 +20,15 @@ async function createWardrobe(req, res) {
 }
 
 async function getWardrobe(req, res) {
-    const { id } = req.params;
-    if (!id) {
+    const { wardrobeCode } = req.params;
+    if (!wardrobeCode) {
         return res.status(400).json({ error: "Missing Field" });
     }
-
-    console.log("id", id);
 
     try {
         const rows = await query(
             "SELECT * FROM tbl_101_wardrobes_of_user WHERE wardrobe_code = ?",
-            [id]
+            [wardrobeCode]
         );
 
         if (rows.length === 0) {
@@ -45,16 +43,16 @@ async function getWardrobe(req, res) {
 }
 
 async function updateWardrobeName(req, res) {
-    const { id } = req.params; 
+    const { wardrobeCode } = req.params; 
     const { wardrobeName } = req.body;
-    if (!id || !wardrobeName) {
+    if (!wardrobeCode || !wardrobeName) {
         return res.status(400).json({ error: "Missing Field" });
     }
 
     try {
         const result = await query(
             "UPDATE tbl_101_wardrobes_of_user SET wardrobe_name = ? WHERE wardrobe_code = ?",
-            [wardrobeName, id]
+            [wardrobeName, wardrobeCode]
         );
 
         if (result.affectedRows === 0) {
@@ -69,15 +67,15 @@ async function updateWardrobeName(req, res) {
 }
 
 async function deleteWardrobe(req, res) {
-    const { id } = req.params;
-    if (!id) {
+    const { wardrobeCode } = req.params;
+    if (!wardrobeCode) {
         return res.status(400).json({ error: "Missing Field" });
     }
 
     try {
         const result = await query(
             "DELETE FROM tbl_101_wardrobes_of_user WHERE wardrobe_code = ?",
-            [id]
+            [wardrobeCode]
         );
 
         if (result.affectedRows === 0) {

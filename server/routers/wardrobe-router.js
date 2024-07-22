@@ -5,8 +5,8 @@ const wardrobeRouter = new Router();
 
 
 wardrobeRouter.post("/", wardrobeController.createWardrobe);
-wardrobeRouter.get("/:id", wardrobeController.getWardrobe);
-wardrobeRouter.put("/:id", wardrobeController.updateWardrobeName);
-wardrobeRouter.delete("/:id", wardrobeController.deleteWardrobe);
+wardrobeRouter.get("/:wardrobeCode", wardrobeController.getWardrobe);
+wardrobeRouter.put("/:wardrobeCode", wardrobeController.updateWardrobeName);
+wardrobeRouter.delete("/:wardrobeCode", wardrobeController.deleteWardrobe);
 
 module.exports = { wardrobeRouter };
