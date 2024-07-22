@@ -37,8 +37,8 @@ const initialize = async () => {
         items INT NOT NULL,
         looks INT NOT NULL,
         FOREIGN KEY (user_id) REFERENCES tbl_101_users(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
+          ON DELETE CASCADE
+          ON UPDATE CASCADE
       );
     `);
     await connection.execute(`
@@ -53,8 +53,8 @@ const initialize = async () => {
         item_size VARCHAR(255) NOT NULL, 
         item_img VARCHAR(500) NOT NULL,
         FOREIGN KEY (wardrobe_code) REFERENCES tbl_101_wardrobes_of_user(wardrobe_code)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
+          ON DELETE CASCADE
+          ON UPDATE CASCADE
       );
     `);
     await connection.execute(`
@@ -65,14 +65,26 @@ const initialize = async () => {
         item_id_3 INT NOT NULL,
         look_status BOOLEAN,
         FOREIGN KEY (item_id_1) REFERENCES tbl_101_item(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
+          ON DELETE CASCADE
+          ON UPDATE CASCADE,
         FOREIGN KEY (item_id_2) REFERENCES tbl_101_item(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
+          ON DELETE CASCADE
+          ON UPDATE CASCADE,
         FOREIGN KEY (item_id_3) REFERENCES tbl_101_item(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
+          ON DELETE CASCADE
+          ON UPDATE CASCADE
+      );
+    `);
+    await connection.execute(`
+      CREATE TABLE if not exists tbl_101_wardrobe (
+        wardrobe_code INT NOT NULL,
+        item_id INT NOT NULL,
+        FOREIGN KEY (wardrobe_code) REFERENCES tbl_101_wardrobes_of_user(wardrobe_code)
+          ON DELETE CASCADE
+          ON UPDATE CASCADE,
+        FOREIGN KEY (item_id) REFERENCES tbl_101_item(id)
+          ON DELETE CASCADE
+          ON UPDATE CASCADE
       );
     `);
   } finally {
