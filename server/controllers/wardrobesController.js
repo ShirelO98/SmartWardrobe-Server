@@ -91,7 +91,7 @@ async function deleteWardrobe(req, res) {
 
 
 module.exports = {
-    wardrobeController: {
+    wardrobesController: {
         createWardrobe,
         getWardrobe,
         updateWardrobeName,

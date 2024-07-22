@@ -7,7 +7,7 @@ db.dbinit();
 
 // Import routes
 const { userRouter } = require("./routers/users-router");
-const { wardrobeRouter } = require("./routers/wardrobe-router");
+const { wardrobesRouter } = require("./routers/wardrobes-router");
 
 
 app.use(express.json());
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use("/user", userRouter);
-app.use("/wardrobe", wardrobeRouter);
+app.use("/wardrobe", wardrobesRouter);
 
 
 app.listen(port);
