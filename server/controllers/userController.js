@@ -1,5 +1,5 @@
 const db = require("../db");
-const bcrypt = require("bcrypt");
+
 
 async function loginUser(req, res) {
   const { username, password } = req.body;
@@ -18,10 +18,7 @@ async function loginUser(req, res) {
     if (rows.length === 0) {
       return res.status(401).json({ error: "Wrong User Name or Password" });
     }
-    const match = await bcrypt.compare(password, rows[0].password);
-    if (!match) {
-      return res.status(401).json({ error: "Wrong Username or Password" });
-    }
+   
 
     res.json({ "User ID": rows[0].user_id });
   } catch (err) {
