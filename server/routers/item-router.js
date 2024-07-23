@@ -1,12 +1,8 @@
 const { Router } = require("express");
-const {
-  getAllItems,
-  getFilteredItems,
-  deleteItem,
-} = require("../controllers/itemController");
+const { itemController, } = require("../controllers/itemController");
 const itemRouter = Router();
 
-itemRouter.get("/:wardrobeCode", getAllItems);
-itemRouter.get("/:wardrobeCode/:filter", getFilteredItems);
-itemRouter.delete("/:item_id", deleteItem);
+itemRouter.get("/:wardrobeCode", itemController.getAllItems);
+itemRouter.get("/:wardrobeCode/:filter", itemController.getFilteredItems);
+itemRouter.delete("/:item_id", itemController.deleteItem);
 module.exports = { itemRouter };

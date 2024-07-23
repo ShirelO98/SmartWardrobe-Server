@@ -51,7 +51,9 @@ const deleteItem = async (req, res) => {
   }
 };
 module.exports = {
-  getAllItems,
-  getFilteredItems,
-  deleteItem,
+  itemController: {
+    getAllItems,
+    getFilteredItems,
+    deleteItem,
+  },
 };

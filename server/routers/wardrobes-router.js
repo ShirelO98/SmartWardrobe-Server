@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { wardrobesController } = require("../controllers/wardrobesController");
 
-const wardrobesRouter = new Router();
+const wardrobesRouter = Router();
 
 
 wardrobesRouter.post("/", wardrobesController.createWardrobe);
