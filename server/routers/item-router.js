@@ -4,5 +4,6 @@ const itemRouter = Router();
 
 itemRouter.get("/:wardrobeCode", itemController.getAllItems);
 itemRouter.get("/:wardrobeCode/:filter", itemController.getFilteredItems);
-itemRouter.delete("/:item_id", itemController.deleteItem);
+itemRouter.delete("/:itemId", itemController.deleteItem);
+
 module.exports = { itemRouter };

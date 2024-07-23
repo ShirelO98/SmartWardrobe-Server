@@ -1,19 +1,19 @@
 const { query } = require("../db");
+
 const getAllItems = async (req, res) => {
-  const { wardrobeCode } = req.body;
+  const { wardrobeCode } = req.params;
   if (!wardrobeCode) {
     return res.status(400).json({ error: "Missing Field" });
   }
-
   try {
-    const sql = ` "SELECT * FROM tbl_101_item where wardrobe_code=?"`;
-    const rows = await query(sql, [wardrobeCode]);
+    const rows = await query('SELECT * FROM tbl_101_item where wardrobe_code=?', [wardrobeCode]);
     res.json(rows);
   } catch (err) {
     console.error("Error fetching Items", err);
     res.status(500).json({ error: "Database query failed" });
   }
 };
+
 const getFilteredItems = async (req, res) => {
   const { wardrobeCode, filter } = req.params;
 
@@ -34,9 +34,10 @@ const getFilteredItems = async (req, res) => {
     res.status(500).json({ error: "Database query failed" });
   }
 };
+
 const deleteItem = async (req, res) => {
-  const { item_id } = req.params;
-  if (!item_id) {
+  const { itemId } = req.params;
+  if (!itemId) {
     return res.status(400).json({ error: "Missing parameters" });
   }
   try {
@@ -50,6 +51,7 @@ const deleteItem = async (req, res) => {
     res.status(500).json({ error: "Database query failed" });
   }
 };
+
 module.exports = {
   itemController: {
     getAllItems,
