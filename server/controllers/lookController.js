@@ -1,9 +1,9 @@
 const { query } = require("../db");
 
-let lookcreated = false;
+let lookscreated = false;
 
-const fetchItems = async () => {
-    const items = await query('SELECT * FROM tbl_101_item', []);
+const fetchItems = async (wardrobeCode) => {
+    const items = await query('SELECT * FROM tbl_101_item where wardrobe_code = ?', [wardrobeCode]);
     return items;
 };
 
@@ -91,42 +91,72 @@ const createLooksFromGroupedItems = (itemsBySeasonAndType) => {
     return looks;
 };
 
-const insertLooksIntoDatabase = async (looks) => {
+const insertLooksIntoDatabase = async (looks, wardrobeCode) => {
     for (const look of looks) {
-        await query('INSERT INTO tbl_101_looks (item_id_1, item_id_2, item_id_3, look_status) VALUES (?, ?, ?, ?)',
-            [look.item_id_1, look.item_id_2, look.item_id_3, look.look_status]);
+        await query('INSERT INTO tbl_101_looks (item_id_1, item_id_2, item_id_3, look_status, wardrobe_code) VALUES (?, ?, ?, ?, ?)',
+            [look.item_id_1, look.item_id_2, look.item_id_3, look.look_status, wardrobeCode]);
     }
 };
 
-async function createLooks() {
+async function createLooks(wardrobeCode) {
     try {
-        const items = await fetchItems();
+        const items = await fetchItems(wardrobeCode);
         const itemsBySeasonAndType = groupItemsBySeasonAndType(items);
         const looks = createLooksFromGroupedItems(itemsBySeasonAndType);
-        await insertLooksIntoDatabase(looks);
+        await insertLooksIntoDatabase(looks, wardrobeCode);
         console.log('Looks created successfully!');
-        lookcreated = true;
     } catch (error) {
         console.error('Error creating looks:', error);
     }
 }
 
+fetchWardrobes = async () => {
+    const looks = await query("SELECT wardrobe_code FROM tbl_101_wardrobes_of_user");
+    const wardrobeCodes = looks.map(row => row.wardrobe_code)
+    return wardrobeCodes;
+}
+
+initLooksForAllWardrobes = async () => {
+    const wardrobeCodes = await fetchWardrobes();
+    for (const wardrobeCode of wardrobeCodes) {
+        await createLooks(wardrobeCode);
+    }
+    lookscreated = true;
+    console.log('Looks created for all wardrobes successfully!');
+}
+
+
+
 async function getAllLooks(req, res) {
-    if (!lookcreated) {
-        await createLooks();
+    if (!lookscreated) {
+        await initLooksForAllWardrobes();
+    }
+    const {wardrobeCode} = req.params;
+    if (!wardrobeCode) {
+        return res.status(400).json({ error: "Missing Field" });
+    }
+    try {
+        const looks = await query(
+            "SELECT * FROM tbl_101_looks WHERE wardrobe_code = ?",
+            [wardrobeCode]
+        );
+        res.json(looks);
+    } catch (err) {
+        console.error("Failed to get looks:", err);
+        res.status(500).json({ error: "Failed to get looks" });
     }
 }
 
 async function getLook(req, res) {
-    if (!lookcreated) {
-        await createLooks();
+    if (!lookscreated) {
+        await initLooksForAllWardrobes();
     }
 }
 
 
 async function deleteLook(req, res) {
-    if (!lookcreated) {
-        await createLooks();
+    if (!lookscreated) {
+        await initLooksForAllWardrobes();
     }
 
 }
