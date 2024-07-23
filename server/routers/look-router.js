@@ -4,6 +4,6 @@ const lookRouter = Router();
 
 lookRouter.get("/:wardrobeCode", lookController.getAllLooks);
 // lookRouter.get("/:wardrobeCode/:filter", lookController.getLook);
-// lookRouter.delete("/:look", lookController.deleteLook);
+lookRouter.delete("/:lookId", lookController.deleteLook);
 
 module.exports = { lookRouter };

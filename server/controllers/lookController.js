@@ -126,12 +126,11 @@ initLooksForAllWardrobes = async () => {
 }
 
 
-
 async function getAllLooks(req, res) {
     if (!lookscreated) {
         await initLooksForAllWardrobes();
     }
-    const {wardrobeCode} = req.params;
+    const { wardrobeCode } = req.params;
     if (!wardrobeCode) {
         return res.status(400).json({ error: "Missing Field" });
     }
@@ -140,6 +139,10 @@ async function getAllLooks(req, res) {
             "SELECT * FROM tbl_101_looks WHERE wardrobe_code = ?",
             [wardrobeCode]
         );
+
+        if (looks.length === 0) {
+            return res.status(404).json({ error: "Looks not found" });
+        }
         res.json(looks);
     } catch (err) {
         console.error("Failed to get looks:", err);
@@ -151,22 +154,33 @@ async function getLook(req, res) {
     if (!lookscreated) {
         await initLooksForAllWardrobes();
     }
-}
-
-
-async function deleteLook(req, res) {
-    if (!lookscreated) {
-        await initLooksForAllWardrobes();
+    const { wardrobeCode, filter } = req.params;
+    if (!wardrobeCode || !filter) {
+        return res.status(400).json({ error: "Missing Field" });
     }
 
 }
 
-
-
-
-
-
-
+async function deleteLook(req, res) {
+    let checkIfLooksExist = await query("SELECT COUNT(*) AS count FROM tbl_101_looks;");
+    if (checkIfLooksExist[0].count === 0) {
+        return res.status(404).json({ error: "Looks not found" });
+    }
+    const { lookId } = req.params;
+    if (!lookId) {
+        return res.status(400).json({ error: "Missing lookId parameter" });
+    }
+    try {
+        const result = await query("DELETE FROM tbl_101_looks WHERE look_id = ?", [lookId]);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "Look not found" });
+        }
+        res.json({ message: "Look deleted successfully" });
+    } catch (err) {
+        console.error("Failed to delete look:", err);
+        res.status(500).json({ error: "Failed to delete look" });
+    }
+}
 
 module.exports = {
     lookController: {
