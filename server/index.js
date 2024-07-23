@@ -9,7 +9,7 @@ db.dbinit();
 const { userRouter } = require("./routers/users-router");
 const { wardrobesRouter } = require("./routers/wardrobes-router");
 
-
+app.use('/assets/items', express.static('images')); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
