@@ -8,6 +8,7 @@ db.dbinit();
 // Import routes
 const { userRouter } = require("./routers/users-router");
 const { wardrobesRouter } = require("./routers/wardrobes-router");
+const {itemRouter}=require("./routers/item-router");
 
 app.use("/assets/items", express.static('items')); 
 app.use(express.json());
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 // Routes
 app.use("/user", userRouter);
 app.use("/wardrobe", wardrobesRouter);
+app.use("/items",itemRouter);
 
 
 app.listen(port);
