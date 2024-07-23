@@ -1,4 +1,12 @@
+/* להוסיף כאשר מוסיפים אייטם צריך לעדכן את הלוקים - שיראל */
+
 const { query } = require("../db");
+
+const ITEM_TYPE = {
+  1: "Shirt",
+  2: "Pants",
+  3: "Shoes",
+};
 
 const getAllItems = async (req, res) => {
   const { wardrobeCode } = req.params;
@@ -7,6 +15,9 @@ const getAllItems = async (req, res) => {
   }
   try {
     const rows = await query('SELECT * FROM tbl_101_item where wardrobe_code=?', [wardrobeCode]);
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Items not found" });
+    }
     res.json(rows);
   } catch (err) {
     console.error("Error fetching Items", err);
@@ -16,17 +27,18 @@ const getAllItems = async (req, res) => {
 
 const getFilteredItems = async (req, res) => {
   const { wardrobeCode, filter } = req.params;
-
   if (!wardrobeCode || !filter) {
     return res.status(400).json({ error: "Missing parameters" });
   }
-
+  const itemType = ITEM_TYPE[filter];
+  if (!itemType) {
+    return res.status(400).json({ error: "Invalid filter value" });
+  }
   try {
-    const sql = `
+    const rows = await query(`
         SELECT * FROM tbl_101_item
         WHERE wardrobe_code = ? AND item_type = ?
-      `;
-    const rows = await query(sql, [wardrobeCode, filter]);
+      `, [wardrobeCode, itemType]);
 
     res.json(rows);
   } catch (err) {
@@ -41,8 +53,7 @@ const deleteItem = async (req, res) => {
     return res.status(400).json({ error: "Missing parameters" });
   }
   try {
-    const sql = `delete from tbl_101_item where id =?`;
-    const result = await query(sql, [item_id]);
+    const result = await query(`delete from tbl_101_item where id =?`, [itemId]);
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "Item not found" });
     }
