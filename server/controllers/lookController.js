@@ -61,7 +61,6 @@ const createLooksFromGroupedItems = (itemsBySeasonAndType) => {
                     const pantsSeason = combinedPants[j].item_season;
                     const shoesSeason = combinedShoes[k].item_season;
 
-                    // Check if all items have the same season or if one of the seasons is 'All Seasons'
                     if ((shirtSeason === pantsSeason || shirtSeason === 'All Seasons' || pantsSeason === 'All Seasons') &&
                         (shirtSeason === shoesSeason || shirtSeason === 'All Seasons' || shoesSeason === 'All Seasons') &&
                         (pantsSeason === shoesSeason || pantsSeason === 'All Seasons' || shoesSeason === 'All Seasons')) {
@@ -150,6 +149,7 @@ async function getAllLooks(req, res) {
     }
 }
 
+// just if needed
 async function getLook(req, res) {
     if (!lookscreated) {
         await initLooksForAllWardrobes();
