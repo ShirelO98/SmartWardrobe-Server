@@ -8,19 +8,24 @@ async function loginUser(req, res) {
 
   try {
     const rows = await query(
-      "SELECT id FROM tbl_101_users WHERE user_name = ? AND user_password = ?",
+      "SELECT id, user_type FROM tbl_101_users WHERE user_name = ? AND user_password = ?",
       [username, password]
     );
     if (rows[0] === undefined) {
       return res.status(401).json({ error: "Wrong User Name or Password" });
     }
 
-    res.json({ UserID: rows[0].UserID, msg: "Login successful" });
+    res.json({
+      UserID: rows[0].id,
+      user_type: rows[0].user_type,
+      msg: "Login successful"
+    });
   } catch (err) {
     console.error("Failed to login:", err);
     res.status(500).json({ error: "Failed to login" });
   }
 }
+
 module.exports = {
   userController: {
     loginUser,
