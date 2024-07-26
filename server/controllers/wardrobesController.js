@@ -1,9 +1,9 @@
 const { query } = require("../db");
 
 async function createWardrobe(req, res) {
-  const { wardrobeName } = req.body;
-  const {userId}=rq.params
-  if (!wardrobeName ||!userId) {
+  const { wardrobeName, items, looks, userId } = req.body;
+
+  if (!wardrobeName || !userId) {
     return res.status(400).json({ error: "Missing Field" });
   }
 
@@ -12,8 +12,12 @@ async function createWardrobe(req, res) {
       "INSERT INTO tbl_101_wardrobes_of_user (user_id, wardrobe_name, items, looks) VALUES (?, ?, ?, ?)",
       [userId, wardrobeName, 0, 0]
     );
-
-    res.json({ wardrobeCode: rows.insertId, msg: "Wardrobe created" });
+    const affectedRows = await query(
+      "Select * from tbl_101_wardrobes_of_user where wardrobe_name=?",
+      [ wardrobeName]
+    );
+  
+    res.json({ wardrobeCode: affectedRows[0].wardrobe_code, msg: "Wardrobe created" });
   } catch (err) {
     console.error("Failed to create wardrobe:", err);
     res.status(500).json({ error: "Failed to create wardrobe" });
@@ -21,7 +25,7 @@ async function createWardrobe(req, res) {
 }
 
 async function getWardrobe(req, res) {
-  console.log(`${req}`);
+  console.log("code");
   const { wardrobeCode } = req.params;
   if (!wardrobeCode) {
     return res.status(400).json({ error: "Missing Field" });
@@ -44,9 +48,8 @@ async function getWardrobe(req, res) {
   }
 }
 async function getAllUserWardrobes(req, res) {
-  console.log("hi");
+  console.log("all");
   const { userId } = req.params;
-  console.log(userId);
   if (!userId) {
     return res.status(400).json({ error: "Missing Field" });
   }
@@ -69,7 +72,9 @@ async function getAllUserWardrobes(req, res) {
 }
 async function updateWardrobeName(req, res) {
   const { wardrobeCode } = req.params;
+  console.log(wardrobeCode);
   const { wardrobeName } = req.body;
+  console.log(wardrobeName);
   if (!wardrobeCode || !wardrobeName) {
     return res.status(400).json({ error: "Missing Field" });
   }
