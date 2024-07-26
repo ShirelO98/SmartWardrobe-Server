@@ -11,7 +11,7 @@ const { wardrobesRouter } = require("./routers/wardrobes-router");
 const { itemRouter } = require("./routers/item-router");
 const { lookRouter } = require("./routers/look-router");
 
-app.use("/assets/items", express.static('items'));
+app.use("/assets/items", express.static(__dirname + '/assets/items'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
