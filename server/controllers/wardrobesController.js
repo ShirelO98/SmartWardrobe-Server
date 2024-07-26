@@ -41,7 +41,28 @@ async function getWardrobe(req, res) {
         res.status(500).json({ error: "Failed to get wardrobe" });
     }
 }
+async function getAllUserWardrobes(req, res) {
+    const { userId } = req.params;
+    if (!userId) {
+        return res.status(400).json({ error: "Missing Field" });
+    }
 
+    try {
+        const rows = await query(
+            "SELECT * FROM tbl_101_wardrobes_of_user WHERE user_id = ?",
+            [userId]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: "Wardrobes not found" });
+        }
+
+        res.json(rows);
+    } catch (err) {
+        console.error("Failed to get wardrobe:", err);
+        res.status(500).json({ error: "Failed to get wardrobe" });
+    }
+}
 async function updateWardrobeName(req, res) {
     const { wardrobeCode } = req.params; 
     const { wardrobeName } = req.body;
@@ -96,5 +117,6 @@ module.exports = {
         getWardrobe,
         updateWardrobeName,
         deleteWardrobe,
+        getAllUserWardrobes,
     },
 };
