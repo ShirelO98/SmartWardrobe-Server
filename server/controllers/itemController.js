@@ -1,5 +1,3 @@
-/* להוסיף כאשר מוחקים אייטם צריך לעדכן את הלוקים - שיראל */
-
 const { query } = require("../db");
 
 const ITEM_TYPE = {
@@ -8,6 +6,25 @@ const ITEM_TYPE = {
   2: "Pants",
   3: "Shoes",
 };
+const updateStatus = async (req, res) => {
+  const { itemId } = req.params;
+
+  if (!itemId) {
+    return res.status(400).json({ error: "Missing parameters" });
+  }
+  try {
+    const result = await query(
+      `update tbl_101_item set item_status = 1-item_status where id=?`,
+      [itemId]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+    res.status(200).json({ message: "Item successfully updated" });
+  } catch {
+    res.status(500).json({ error: "Database query failed" });
+  }
+};
 
 const getAllItems = async (req, res) => {
   const { wardrobeCode } = req.params;
@@ -15,7 +32,10 @@ const getAllItems = async (req, res) => {
     return res.status(400).json({ error: "Missing Field" });
   }
   try {
-    const rows = await query('SELECT * FROM tbl_101_item where wardrobe_code=?', [wardrobeCode]);
+    const rows = await query(
+      "SELECT * FROM tbl_101_item where wardrobe_code=?",
+      [wardrobeCode]
+    );
     if (rows.length === 0) {
       return res.status(404).json({ error: "Items not found" });
     }
@@ -36,10 +56,13 @@ const getFilteredItems = async (req, res) => {
     return res.status(400).json({ error: "Invalid filter value" });
   }
   try {
-    const rows = await query(`
+    const rows = await query(
+      `
         SELECT * FROM tbl_101_item
         WHERE wardrobe_code = ? AND item_type = ?
-      `, [wardrobeCode, itemType]);
+      `,
+      [wardrobeCode, itemType]
+    );
 
     res.json(rows);
   } catch (err) {
@@ -54,7 +77,9 @@ const deleteItem = async (req, res) => {
     return res.status(400).json({ error: "Missing parameters" });
   }
   try {
-    const result = await query(`delete from tbl_101_item where id =?`, [itemId]);
+    const result = await query(`delete from tbl_101_item where id =?`, [
+      itemId,
+    ]);
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "Item not found" });
     }
@@ -69,5 +94,6 @@ module.exports = {
     getAllItems,
     getFilteredItems,
     deleteItem,
+    updateStatus,
   },
 };

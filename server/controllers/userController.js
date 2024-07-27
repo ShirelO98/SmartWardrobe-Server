@@ -14,7 +14,6 @@ async function loginUser(req, res) {
     if (rows[0] === undefined) {
       return res.status(401).json({ error: "Wrong User Name or Password" });
     }
-    console.log(JSON.stringify(rows[0].f_name));
     res.json({
       UserID: rows[0].id,
       user_type: rows[0].user_type,

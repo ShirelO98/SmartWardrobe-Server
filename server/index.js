@@ -10,6 +10,7 @@ const { userRouter } = require("./routers/users-router");
 const { wardrobesRouter } = require("./routers/wardrobes-router");
 const { itemRouter } = require("./routers/item-router");
 const { lookRouter } = require("./routers/look-router");
+const { stylistRouter } = require("./routers/stylist-router");
 
 app.use("/assets/items", express.static(__dirname + '/assets/items'));
 app.use("/assets/users", express.static(__dirname + '/assets/users'));
@@ -31,6 +32,7 @@ app.use("/user", userRouter);
 app.use("/wardrobe", wardrobesRouter);
 app.use("/items", itemRouter);
 app.use("/looks", lookRouter);
+app.use("/stylist",stylistRouter);
 
 
 app.listen(port);
