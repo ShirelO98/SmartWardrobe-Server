@@ -8,17 +8,20 @@ async function loginUser(req, res) {
 
   try {
     const rows = await query(
-      "SELECT id, user_type FROM tbl_101_users WHERE user_name = ? AND user_password = ?",
+      "SELECT * FROM tbl_101_users WHERE user_name = ? AND user_password = ?",
       [username, password]
     );
     if (rows[0] === undefined) {
       return res.status(401).json({ error: "Wrong User Name or Password" });
     }
-
+    console.log(JSON.stringify(rows[0].f_name));
     res.json({
       UserID: rows[0].id,
       user_type: rows[0].user_type,
-      msg: "Login successful"
+      userFirstName: rows[0].f_name,
+      userLastName: rows[0].l_name,
+      userImgUrl: rows[0].profile_image_url,
+      msg: "Login successful",
     });
   } catch (err) {
     console.error("Failed to login:", err);

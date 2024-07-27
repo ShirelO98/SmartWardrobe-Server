@@ -12,6 +12,7 @@ const { itemRouter } = require("./routers/item-router");
 const { lookRouter } = require("./routers/look-router");
 
 app.use("/assets/items", express.static(__dirname + '/assets/items'));
+app.use("/assets/users", express.static(__dirname + '/assets/users'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
