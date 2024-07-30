@@ -135,7 +135,24 @@ async function getAllLooks(req, res) {
     }
     try {
         const looks = await query(
-            "SELECT * FROM tbl_101_looks WHERE wardrobe_code = ?",
+            `SELECT
+                l.look_id,
+                l.look_status,
+                i1.item_img AS item_img_1,
+                i2.item_img AS item_img_2,
+                i3.item_img AS item_img_3
+            FROM
+                tbl_101_looks l
+            JOIN
+                tbl_101_item i1 ON l.item_id_1 = i1.id
+                AND l.wardrobe_code = i1.wardrobe_code
+            JOIN
+                tbl_101_item i2 ON l.item_id_2 = i2.id
+                AND l.wardrobe_code = i2.wardrobe_code
+            JOIN
+                tbl_101_item i3 ON l.item_id_3 = i3.id
+                AND l.wardrobe_code = i3.wardrobe_code;
+`,
             [wardrobeCode]
         );
 
