@@ -7,7 +7,7 @@ const getAllClients = async (req, res) => {
   }
   try {
     const rows = await query(
-      "SELECT * FROM tbl_101_wardrobes_of_user as user innerjoin tbl_101_ WHERE stylist_id = ?",
+      "SELECT * FROM tbl_101_wardrobes_of_user as user inner join tbl_101_ WHERE stylist_id = ?",
       [stylistId]
     );
 
@@ -20,4 +20,9 @@ const getAllClients = async (req, res) => {
     console.error("Failed to get wardrobe:", err);
     res.status(500).json({ error: "Failed to get wardrobe" });
   }
+};
+module.exports = {
+stylistController: {
+    getAllClients,
+  },
 };
