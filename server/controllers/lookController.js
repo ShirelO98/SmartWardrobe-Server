@@ -1,7 +1,5 @@
 const { query } = require("../db");
 
-let lookscreated = false;
-
 const fetchItems = async (wardrobeCode) => {
     const items = await query('SELECT * FROM tbl_101_item where wardrobe_code = ?', [wardrobeCode]);
     return items;
@@ -120,15 +118,11 @@ initLooksForAllWardrobes = async () => {
     for (const wardrobeCode of wardrobeCodes) {
         await createLooks(wardrobeCode);
     }
-    lookscreated = true;
     console.log('Looks created for all wardrobes successfully!');
 }
 
-
 async function getAllLooks(req, res) {
-    if (!lookscreated) {
-        await initLooksForAllWardrobes();
-    }
+    await initLooksForAllWardrobes();
     const { wardrobeCode } = req.params;
     if (!wardrobeCode) {
         return res.status(400).json({ error: "Missing Field" });
@@ -168,14 +162,10 @@ async function getAllLooks(req, res) {
 
 // just if needed
 async function getLook(req, res) {
-    if (!lookscreated) {
-        await initLooksForAllWardrobes();
-    }
     const { wardrobeCode, filter } = req.params;
     if (!wardrobeCode || !filter) {
         return res.status(400).json({ error: "Missing Field" });
     }
-
 }
 
 async function deleteLook(req, res) {
