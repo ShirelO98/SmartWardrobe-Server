@@ -1,19 +1,19 @@
 const { query } = require("../db");
 
 const getAllClients = async (req, res) => {
-  const { stylistId } = req.params;
-  if (!stylistId) {
+  const { stylistID } = req.params;
+  console.log(stylistID);
+  if (!stylistID) {
     return res.status(404).json({ error: "Not Found" });
   }
   try {
-   
     const rows = await query(
       "SELECT u.* FROM tbl_101_users u INNER JOIN tbl_101_stylists s ON u.stylist_id = s.stylist_id WHERE s.client_id = u.id AND s.stylist_id = ?",
-      [stylistId]
+      [stylistID]
     );
-    
+
     if (rows.length === 0) {
-      return res.status(404).json({ error: "Wardrobes not found" });
+      return res.status(404).json({ error: "Clients not found" });
     }
 
     res.json(rows);
@@ -23,7 +23,7 @@ const getAllClients = async (req, res) => {
   }
 };
 module.exports = {
-stylistController: {
+  stylistController: {
     getAllClients,
   },
 };
