@@ -2,7 +2,6 @@ const { query } = require("../db");
 
 const getAllClients = async (req, res) => {
   const { stylistID } = req.params;
-  console.log(stylistID);
   if (!stylistID) {
     return res.status(404).json({ error: "Not Found" });
   }
