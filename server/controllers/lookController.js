@@ -145,8 +145,8 @@ async function getAllLooks(req, res) {
                 AND l.wardrobe_code = i2.wardrobe_code
             JOIN
                 tbl_101_item i3 ON l.item_id_3 = i3.id
-                AND l.wardrobe_code = i3.wardrobe_code;
-`,
+                AND l.wardrobe_code = i3.wardrobe_code
+            WHERE l.wardrobe_code = ?`,
             [wardrobeCode]
         );
 
