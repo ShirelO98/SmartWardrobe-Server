@@ -31,7 +31,6 @@ const getWeatherData = async (req, res) => {
     if (!cityName) {
       return res.status(400).json({ error: "Please provide a city name" });
     }
-
     const cityData = await axios.get(
       `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${WEATHER_KEY}`
     );
@@ -43,7 +42,8 @@ const getWeatherData = async (req, res) => {
       `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`
     );
     const currentWeather = weatherResponse.data.current_weather;
-    const weatherDescription = weatherCodeApiDesc[currentWeather.weathercode] || "Unknown weather";
+    const weatherDescription =
+      weatherCodeApiDesc[currentWeather.weathercode] || "Unknown weather";
 
     res.json({
       temperature: currentWeather.temperature,
@@ -55,5 +55,3 @@ const getWeatherData = async (req, res) => {
 };
 
 module.exports = { getWeatherData };
-
-
