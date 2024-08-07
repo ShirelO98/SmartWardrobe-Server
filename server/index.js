@@ -11,9 +11,10 @@ const { wardrobesRouter } = require("./routers/wardrobes-router");
 const { itemRouter } = require("./routers/item-router");
 const { lookRouter } = require("./routers/look-router");
 const { stylistRouter } = require("./routers/stylist-router");
+const { weatherRouter } = require("./routers/weather-router");
 
-app.use("/assets/items", express.static(__dirname + '/assets/items'));
-app.use("/assets/users", express.static(__dirname + '/assets/users'));
+app.use("/assets/items", express.static(__dirname + "/assets/items"));
+app.use("/assets/users", express.static(__dirname + "/assets/users"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
@@ -32,8 +33,8 @@ app.use("/user", userRouter);
 app.use("/wardrobe", wardrobesRouter);
 app.use("/items", itemRouter);
 app.use("/looks", lookRouter);
-app.use("/stylist",stylistRouter);
-
+app.use("/stylist", stylistRouter);
+app.use("/weather", weatherRouter);
 
 app.listen(port);
 console.log(`listening on port ${port}`);
