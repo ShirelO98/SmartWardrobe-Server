@@ -21,8 +21,34 @@ const getAllClients = async (req, res) => {
     res.status(500).json({ error: "Failed to get wardrobe" });
   }
 };
+
+const UpdateLookSendByStylist = async (req, res) => {
+  const { lookId } = req.params;
+  const { stylistId, clientID } = req.body;
+  console.log(lookId, stylistId, clientID);
+  if (!lookId || !stylistId || !clientID ) {
+    return res.status(400).json({ error: "Missing Field" });
+  }
+  try {
+    const rows = await query(
+      "UPDATE tbl_101_stylists SET select_look = ? WHERE stylist_id = ? AND client_id = ?",
+      [lookId, stylistId, clientID]
+    );
+
+    if (rows.affectedRows === 0) {
+      return res.status(404).json({ error: "Look not found" });
+    }
+
+    res.json({ message: "Look updated" });
+  } catch (err) {
+    console.error("Failed to update look:", err);
+    res.status(500).json({ error: "Failed to update look" });
+  }
+};
+
 module.exports = {
   stylistController: {
     getAllClients,
+    UpdateLookSendByStylist,
   },
 };

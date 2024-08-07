@@ -162,9 +162,40 @@ async function getAllLooks(req, res) {
 
 // just if needed
 async function getLook(req, res) {
-    const { wardrobeCode, filter } = req.params;
-    if (!wardrobeCode || !filter) {
+    const { wardrobeCode, lookId } = req.params;
+    if (!wardrobeCode || !lookId) {
         return res.status(400).json({ error: "Missing Field" });
+    }
+    try {
+        const look = await query(
+            `SELECT
+                l.look_id,
+                l.look_status,
+                i1.item_img AS item_img_1,
+                i2.item_img AS item_img_2,
+                i3.item_img AS item_img_3
+            FROM
+                tbl_101_looks l
+            JOIN
+                tbl_101_item i1 ON l.item_id_1 = i1.id
+                AND l.wardrobe_code = i1.wardrobe_code
+            JOIN
+                tbl_101_item i2 ON l.item_id_2 = i2.id
+                AND l.wardrobe_code = i2.wardrobe_code
+            JOIN
+                tbl_101_item i3 ON l.item_id_3 = i3.id
+                AND l.wardrobe_code = i3.wardrobe_code
+            WHERE l.wardrobe_code = ? AND l.look_id = ?`,
+            [wardrobeCode, lookId]
+        );
+
+        if (look.length === 0) {
+            return res.status(404).json({ error: "Look not found" });
+        }
+        res.json(look[0]);
+    } catch (err) {
+        console.error("Failed to get look:", err);
+        res.status(500).json({ error: "Failed to get look" });
     }
 }
 
