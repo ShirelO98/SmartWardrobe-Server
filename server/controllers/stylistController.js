@@ -7,7 +7,7 @@ const getAllClients = async (req, res) => {
   }
   try {
     const rows = await query(
-      "SELECT u.id, u.f_name, u.l_name, u.user_type, u.profile_image_url, u.stylist_id, u.client_image FROM tbl_101_users u INNER JOIN tbl_101_stylists s ON u.stylist_id = s.stylist_id WHERE s.client_id = u.id AND s.stylist_id = ?",
+      "SELECT s.msg_client_to_stylist, u.id, u.f_name, u.l_name, u.user_type, u.profile_image_url, u.stylist_id, u.client_image FROM tbl_101_users u INNER JOIN tbl_101_stylists s ON u.stylist_id = s.stylist_id WHERE s.client_id = u.id AND s.stylist_id = ?",
       [stylistID]
     );
 
@@ -25,7 +25,6 @@ const getAllClients = async (req, res) => {
 const UpdateLookSendByStylist = async (req, res) => {
   const { lookId } = req.params;
   const { stylistId, clientID } = req.body;
-  console.log(lookId, stylistId, clientID);
   if (!lookId || !stylistId || !clientID ) {
     return res.status(400).json({ error: "Missing Field" });
   }
