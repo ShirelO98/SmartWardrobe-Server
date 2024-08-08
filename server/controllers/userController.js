@@ -26,18 +26,30 @@ async function loginUser(req, res) {
         "SELECT wardrobe_code from tbl_101_looks WHERE look_id = ?",
         [rows2[0].select_look]);
     }
-  
-    res.json({
-      UserID: rows[0].id,
-      user_type: rows[0].user_type,
-      userFirstName: rows[0].f_name,
-      userLastName: rows[0].l_name,
-      userImgUrl: rows[0].profile_image_url,
-      selectedLook: rows2[0].select_look,
-      messegeFromStylist: rows2[0].msg_stylist_to_client,
-      wardrobeCode: wardrobecode[0].wardrobe_code,
-      msg: "Login successful",
-    });
+    
+    if (rows[0].user_type === 1) {
+      res.json({
+        UserID: rows[0].id,
+        user_type: rows[0].user_type,
+        userFirstName: rows[0].f_name,
+        userLastName: rows[0].l_name,
+        userImgUrl: rows[0].profile_image_url,
+        selectedLook: rows2[0].select_look,
+        messegeFromStylist: rows2[0].msg_stylist_to_client,
+        wardrobeCode: wardrobecode[0].wardrobe_code,
+        msg: "Login successful",
+      });
+    }
+    else {
+      res.json({
+        UserID: rows[0].id,
+        user_type: rows[0].user_type,
+        userFirstName: rows[0].f_name,
+        userLastName: rows[0].l_name,
+        userImgUrl: rows[0].profile_image_url,
+        msg: "Login successful",
+      });
+    }
   } catch (err) {
     res.status(500).json({ error: "Failed to login" });
   }
