@@ -35,6 +35,9 @@ const updateStatus = async (req, res) => {
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "Item not found" });
     }
+    if (result2.affectedRows === 0) {
+      return res.status(404).json({ error: "Look not found" });
+    }
     res.status(200).json({ message: "Item successfully updated" });
   } catch {
     res.status(500).json({ error: "Database query failed" });
