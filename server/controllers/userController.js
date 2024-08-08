@@ -27,6 +27,7 @@ async function loginUser(req, res) {
       userLastName: rows[0].l_name,
       userImgUrl: rows[0].profile_image_url,
       selectedLook: rows2[0].select_look,
+      messegeFromStylist: rows2[0].msg_stylist_to_client,
       msg: "Login successful",
     });
   } catch (err) {
