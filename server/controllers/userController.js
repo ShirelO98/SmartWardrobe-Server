@@ -26,7 +26,7 @@ async function loginUser(req, res) {
         "SELECT wardrobe_code from tbl_101_looks WHERE look_id = ?",
         [rows[0].id]);
     }
-
+  
     res.json({
       UserID: rows[0].id,
       user_type: rows[0].user_type,
@@ -35,7 +35,7 @@ async function loginUser(req, res) {
       userImgUrl: rows[0].profile_image_url,
       selectedLook: rows2[0].select_look,
       messegeFromStylist: rows2[0].msg_stylist_to_client,
-      wardrobeCode: wardrobecode[0].wardrobe_code,
+      wardrobeCode: wardrobecode.wardrobe_code,
       msg: "Login successful",
     });
   } catch (err) {
