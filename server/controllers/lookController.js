@@ -101,7 +101,6 @@ async function createLooks(wardrobeCode) {
         const itemsBySeasonAndType = groupItemsBySeasonAndType(items);
         const looks = createLooksFromGroupedItems(itemsBySeasonAndType);
         await insertLooksIntoDatabase(looks, wardrobeCode);
-        console.log('Looks created successfully!');
     } catch (error) {
         console.error('Error creating looks:', error);
     }
@@ -118,7 +117,6 @@ initLooksForAllWardrobes = async () => {
     for (const wardrobeCode of wardrobeCodes) {
         await createLooks(wardrobeCode);
     }
-    console.log('Looks created for all wardrobes successfully!');
 }
 
 async function getAllLooks(req, res) {
@@ -155,12 +153,10 @@ async function getAllLooks(req, res) {
         }
         res.json(looks);
     } catch (err) {
-        console.error("Failed to get looks:", err);
         res.status(500).json({ error: "Failed to get looks" });
     }
 }
 
-// just if needed
 async function getLook(req, res) {
     const { wardrobeCode, lookId } = req.params;
     if (!wardrobeCode || !lookId) {
@@ -194,7 +190,6 @@ async function getLook(req, res) {
         }
         res.json(look[0]);
     } catch (err) {
-        console.error("Failed to get look:", err);
         res.status(500).json({ error: "Failed to get look" });
     }
 }
@@ -215,7 +210,6 @@ async function deleteLook(req, res) {
         }
         res.json({ message: "Look deleted successfully" });
     } catch (err) {
-        console.error("Failed to delete look:", err);
         res.status(500).json({ error: "Failed to delete look" });
     }
 }

@@ -23,7 +23,6 @@ async function loginUser(req, res) {
       msg: "Login successful",
     });
   } catch (err) {
-    console.error("Failed to login:", err);
     res.status(500).json({ error: "Failed to login" });
   }
 }

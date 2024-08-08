@@ -17,7 +17,6 @@ const getAllClients = async (req, res) => {
 
     res.json(rows);
   } catch (err) {
-    console.error("Failed to get wardrobe:", err);
     res.status(500).json({ error: "Failed to get wardrobe" });
   }
 };
@@ -40,7 +39,6 @@ const UpdateLookSendByStylist = async (req, res) => {
 
     res.json({ message: "Look updated" });
   } catch (err) {
-    console.error("Failed to update look:", err);
     res.status(500).json({ error: "Failed to update look" });
   }
 };

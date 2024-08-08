@@ -56,7 +56,6 @@ const getAllItems = async (req, res) => {
     }
     res.json(rows);
   } catch (err) {
-    console.error("Error fetching Items", err);
     res.status(500).json({ error: "Database query failed" });
   }
 };
@@ -81,7 +80,6 @@ const getFilteredItems = async (req, res) => {
 
     res.json(rows);
   } catch (err) {
-    console.error("Error fetching filtered items:", err);
     res.status(500).json({ error: "Database query failed" });
   }
 };

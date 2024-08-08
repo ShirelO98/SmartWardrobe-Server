@@ -18,7 +18,6 @@ async function createWardrobe(req, res) {
       msg: "Wardrobe created",
     });
   } catch (err) {
-    console.error("Failed to create wardrobe:", err);
     res.status(500).json({ error: "Failed to create wardrobe" });
   }
 }
@@ -40,7 +39,6 @@ async function getWardrobe(req, res) {
 
     res.json(rows[0]);
   } catch (err) {
-    console.error("Failed to get wardrobe:", err);
     res.status(500).json({ error: "Failed to get wardrobe" });
   }
 }
@@ -62,7 +60,6 @@ async function getAllUserWardrobes(req, res) {
 
     res.json(rows);
   } catch (err) {
-    console.error("Failed to get wardrobe:", err);
     res.status(500).json({ error: "Failed to get wardrobe" });
   }
 }
@@ -83,7 +80,6 @@ async function updateWardrobeName(req, res) {
     }
     res.json({ msg: "Wardrobe name updated" });
   } catch (err) {
-    console.error("Failed to update wardrobe name:", err);
     res.status(500).json({ error: "Failed to update wardrobe name" });
   }
 }
@@ -106,7 +102,6 @@ async function deleteWardrobe(req, res) {
 
     res.json({ msg: "Wardrobe deleted" });
   } catch (err) {
-    console.error("Failed to delete wardrobe:", err);
     res.status(500).json({ error: "Failed to delete wardrobe" });
   }
 }
