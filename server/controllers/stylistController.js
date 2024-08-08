@@ -7,7 +7,7 @@ const getAllClients = async (req, res) => {
   }
   try {
     const rows = await query(
-      "SELECT s.msg_client_to_stylist, select_look, u.id, u.f_name, u.l_name, u.user_type, u.profile_image_url, u.stylist_id, u.client_image FROM tbl_101_users u INNER JOIN tbl_101_stylists s ON u.stylist_id = s.stylist_id WHERE s.client_id = u.id AND s.stylist_id = ?",
+      "SELECT s.msg_client_to_stylist, s.select_look, u.id, u.f_name, u.l_name, u.user_type, u.profile_image_url, u.stylist_id, u.client_image FROM tbl_101_users u INNER JOIN tbl_101_stylists s ON u.stylist_id = s.stylist_id WHERE s.client_id = u.id AND s.stylist_id = ?",
       [stylistID]
     );
 
