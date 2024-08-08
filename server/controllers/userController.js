@@ -35,7 +35,7 @@ async function loginUser(req, res) {
       userImgUrl: rows[0].profile_image_url,
       selectedLook: rows2[0].select_look,
       messegeFromStylist: rows2[0].msg_stylist_to_client,
-      wardrobeCode: wardrobecode.wardrobe_code,
+      wardrobeCode: wardrobecode[0].wardrobe_code,
       msg: "Login successful",
     });
   } catch (err) {
