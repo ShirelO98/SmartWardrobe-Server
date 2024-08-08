@@ -24,7 +24,7 @@ async function loginUser(req, res) {
     if (rows[0].user_type === 1) {
       wardrobecode = await query(
         "SELECT wardrobe_code from tbl_101_looks WHERE look_id = ?",
-        [rows[0].id]);
+        [rows2[0].select_look]);
     }
   
     res.json({
