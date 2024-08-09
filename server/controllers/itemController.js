@@ -19,19 +19,19 @@ const updateStatus = async (req, res) => {
     );
     const result2 = await query(`
       UPDATE tbl_101_looks l
-    LEFT JOIN tbl_101_item i1 ON l.item_id_1 = i1.id
-    LEFT JOIN tbl_101_item i2 ON l.item_id_2 = i2.id
-    LEFT JOIN tbl_101_item i3 ON l.item_id_3 = i3.id
-    SET l.look_status = CASE
-      WHEN (i1.item_status = 1 OR i1.item_status IS NULL)
+INNER JOIN tbl_101_item i1 ON l.item_id_1 = i1.id
+INNER JOIN tbl_101_item i2 ON l.item_id_2 = i2.id
+INNER JOIN tbl_101_item i3 ON l.item_id_3 = i3.id
+SET l.look_status = CASE
+    WHEN (i1.item_status = 1 OR i1.item_status IS NULL)
     AND (i2.item_status = 1 OR i2.item_status IS NULL)
     AND (i3.item_status = 1 OR i3.item_status IS NULL)
     THEN 1
     ELSE 0
-    END
-    WHERE l.item_id_1 = ? 
-    OR l.item_id_2 = ? 
-    OR l.item_id_3 = ?;`, [itemId, itemId, itemId]);
+END
+WHERE l.item_id_1 = ? 
+OR l.item_id_2 = ? 
+OR l.item_id_3 = ?;`, [itemId, itemId, itemId]);
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "Item not found" });
     }
